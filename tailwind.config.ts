@@ -1,20 +1,10 @@
-import type { Config } from "tailwindcss"
+import { Config } from "tailwindcss"
 
-const config: Config = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-    },
-  },
-  plugins: [],
-}
+import { defaultPreset } from "./themes/default/preset"
+
+const config = {
+  presets: [defaultPreset],
+  content: ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
+} satisfies Config
+
 export default config
