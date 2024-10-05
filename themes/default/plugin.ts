@@ -3,61 +3,55 @@ import plugin from "tailwindcss/plugin"
 
 export const defaultPlugin = plugin(
   function ({ addBase }) {
+    // addBase({
+    //   ":root": {
+    //     // Light mode colors
+    //     "--background": "210 20% 98%", // Light gray background
+    //     "--foreground": "220 15% 10%", // Dark gray text
+    //     "--muted": "220 10% 90%", // Light muted background
+    //     "--muted-foreground": "220 9% 46%", // Muted foreground
+    //     "--primary": "220 90% 55%", // Vibrant blue
+    //     "--primary-foreground": "0 0% 100%", // White text on primary
+    //     "--secondary": "150 70% 45%", // Bright green for secondary
+    //     "--secondary-foreground": "0 0% 100%", // White text on secondary
+    //     "--accent": "280 85% 65%", // Vibrant purple accent
+    //     "--accent-foreground": "0 0% 100%", // White text on accent
+    //     "--destructive": "0 80% 55%", // Vibrant red
+    //     "--destructive-foreground": "0 0% 100%", // White text on destructive
+    //     "--border": "220 10% 85%", // Light border
+    //     "--input": "220 10% 85%", // Light input background
+    //     "--ring": "220 15% 70%", // Border/ring for focus
+    //     "--radius": "0.5rem",
+    //   },
+    //   ".dark": {
+    //     // Dark mode colors
+    //     "--background": "220 30% 10%", // Dark background
+    //     "--foreground": "0 0% 95%", // Light text on dark
+    //     "--muted": "220 25% 15%", // Muted dark background
+    //     "--muted-foreground": "220 15% 65%", // Muted dark foreground
+    //     "--primary": "220 80% 65%", // Lighter blue for dark mode
+    //     "--primary-foreground": "0 0% 10%", // Dark text on primary in dark mode
+    //     "--secondary": "150 60% 50%", // Bright green secondary
+    //     "--secondary-foreground": "0 0% 10%", // Dark text on secondary
+    //     "--accent": "280 75% 70%", // Vibrant purple for dark mode
+    //     "--accent-foreground": "0 0% 10%", // Dark text on accent
+    //     "--destructive": "0 70% 60%", // Slightly muted red for dark mode
+    //     "--destructive-foreground": "0 0% 10%", // Dark text on destructive
+    //     "--border": "220 20% 30%", // Dark border
+    //     "--input": "220 20% 30%", // Dark input background
+    //     "--ring": "220 25% 40%", // Ring for focus
+    //     "--radius": "0.5rem", // Border-radius
+    //   },
+    // }),
     addBase({
-      ":root": {
-        "--background": "0 0% 100%",
-        "--foreground": "222.2 47.4% 11.2%",
-        "--muted": "210 40% 96.1%",
-        "--muted-foreground": "215.4 16.3% 46.9%",
-        "--popover": "0 0% 100%",
-        "--popover-foreground": "222.2 47.4% 11.2%",
-        "--border": "214.3 31.8% 91.4%",
-        "--input": "214.3 31.8% 91.4%",
-        "--card": "0 0% 100%",
-        "--card-foreground": "222.2 47.4% 11.2%",
-        "--primary": "222.2 47.4% 11.2%",
-        "--primary-foreground": "210 40% 98%",
-        "--secondary": "210 40% 96.1%",
-        "--secondary-foreground": "222.2 47.4% 11.2%",
-        "--accent": "210 40% 96.1%",
-        "--accent-foreground": "222.2 47.4% 11.2%",
-        "--destructive": "0 100% 50%",
-        "--destructive-foreground": "210 40% 98%",
-        "--ring": "215 20.2% 65.1%",
-        "--radius": "0.5rem",
+      "*": {
+        "@apply border-border": {},
       },
-      ".dark": {
-        "--background": "224 71% 4%",
-        "--foreground": "213 31% 91%",
-        "--muted": "223 47% 11%",
-        "--muted-foreground": "215.4 16.3% 56.9%",
-        "--accent": "216 34% 17%",
-        "--accent-foreground": "210 40% 98%",
-        "--popover": "224 71% 4%",
-        "--popover-foreground": "215 20.2% 65.1%",
-        "--border": "216 34% 17%",
-        "--input": "216 34% 17%",
-        "--card": "224 71% 4%",
-        "--card-foreground": "213 31% 91%",
-        "--primary": "210 40% 98%",
-        "--primary-foreground": "222.2 47.4% 1.2%",
-        "--secondary": "222.2 47.4% 11.2%",
-        "--secondary-foreground": "210 40% 98%",
-        "--destructive": "0 63% 31%",
-        "--destructive-foreground": "210 40% 98%",
-        "--ring": "216 34% 17%",
-        "--radius": "0.5rem",
+      body: {
+        "@apply bg-background text-foreground": {},
+        "font-feature-settings": '"rlig" 1, "calt" 1',
       },
-    }),
-      addBase({
-        "*": {
-          "@apply border-border": {},
-        },
-        body: {
-          "@apply bg-background text-foreground": {},
-          "font-feature-settings": '"rlig" 1, "calt" 1',
-        },
-      })
+    })
   },
   {
     theme: {
@@ -111,6 +105,8 @@ export const defaultPlugin = plugin(
         },
         fontFamily: {
           sans: ["var(--font-sans)", ...fontFamily.sans],
+          inter: ["var(--font-inter)", "sans-serif"],
+          poppins: ["var(--font-poppins)", "sans-serif"],
         },
         keyframes: {
           "accordion-down": {
