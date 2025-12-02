@@ -1,0 +1,223 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User & Auth
+model User {
+  id                String    @id @default(cuid())
+  email             String    @unique
+  name              String?
+  hashedPassword    String?
+  image             String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  subscriptionTier  SubscriptionTier @default(FREE)
+  
+  bookmarks         Bookmark[]
+  collections       Collection[]
+  tags              Tag[]
+  notes             Note[]
+  preferences       UserPreferences?
+  apiKeys           ApiKey[]
+  
+  @@index([email])
+}
+
+model UserPreferences {
+  id                String    @id @default(cuid())
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  theme             String    @default("system")
+  defaultView       String    @default("grid")
+  autoTag           Boolean   @default(true)
+  aiTagConfidence   Int       @default(80) // 0-100
+  privacyMode       Boolean   @default(false)
+  offlineMode       Boolean   @default(true)
+}
+
+// Bookmarks & Collections
+model Collection {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name              String
+  description       String?
+  color             String?
+  isPublic          Boolean   @default(false)
+  isArchived        Boolean   @default(false)
+  
+  bookmarks         Bookmark[]
+  parentId          String?
+  parent            Collection? @relation("SubCollections", fields: [parentId], references: [id], onDelete: SetNull)
+  children          Collection[] @relation("SubCollections")
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@index([userId])
+  @@index([parentId])
+}
+
+model Bookmark {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  url               String
+  title             String
+  description       String?
+  favicon           String?
+  thumbnail         String?
+  
+  content           String?   // Full-text for search
+  contentHash       String?   // Detect duplicates
+  
+  collectionId      String?
+  collection        Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  
+  tags              BookmarkTag[]
+  notes             Note[]
+  embeddings        BookmarkEmbedding?
+  
+  // AI Features
+  aiSummary         String?
+  aiTags            AiTag[]
+  aiTagConfidence   Int?      // 0-100
+  userApprovedAi    Boolean   @default(false)
+  
+  // Metadata
+  readingTime       Int?      // estimated minutes
+  wordCount         Int?
+  isRead            Boolean   @default(false)
+  isFavorite        Boolean   @default(false)
+  isArchived        Boolean   @default(false)
+  
+  // Tracking
+  savedAt           DateTime  @default(now())
+  lastAccessedAt    DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@index([userId])
+  @@index([collectionId])
+  @@index([isArchived])
+  @@index([isFavorite])
+  // @@fulltext([title, description, content]) // Only for MySQL/PostgreSQL specific config, standard prisma doesn't support fulltext attribute in schema for postgres yet without preview features or raw sql. Keeping it simple for now.
+}
+
+model Tag {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name              String
+  color             String?
+  icon              String?
+  
+  bookmarks         BookmarkTag[]
+  aiTags            AiTag[]
+  
+  @@unique([userId, name])
+  @@index([userId])
+}
+
+model BookmarkTag {
+  bookmarkId        String
+  bookmark          Bookmark  @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+  tagId             String
+  tag               Tag       @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  
+  addedAt           DateTime  @default(now())
+  
+  @@id([bookmarkId, tagId])
+  @@index([tagId])
+}
+
+// AI-Suggested Tags
+model AiTag {
+  id                String    @id @default(cuid())
+  bookmarkId        String
+  bookmark          Bookmark  @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+  
+  suggestedTagId    String?
+  suggestedTag      Tag?      @relation(fields: [suggestedTagId], references: [id], onDelete: SetNull)
+  
+  tagName           String    // If user creates new tag from suggestion
+  confidence        Int       // 0-100
+  reasoning         String?   // Why AI suggested this tag
+  
+  userApproved      Boolean   @default(false)
+  userRejected      Boolean   @default(false)
+  
+  createdAt         DateTime  @default(now())
+  
+  @@index([bookmarkId])
+  @@index([suggestedTagId])
+}
+
+// Vector Embeddings for Semantic Search
+model BookmarkEmbedding {
+  id                String    @id @default(cuid())
+  bookmarkId        String    @unique
+  bookmark          Bookmark  @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+  
+  embedding         String    // JSON vector (1536 dims for Gemini)
+  model             String    @default("google-text-embedding")
+  
+  createdAt         DateTime  @default(now())
+}
+
+// User Notes & Highlights
+model Note {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  bookmarkId        String
+  bookmark          Bookmark  @relation(fields: [bookmarkId], references: [id], onDelete: Cascade)
+  
+  content           String    // Note text
+  highlight         String?   // Highlighted excerpt
+  position          Int?      // Position in article (% or char count)
+  
+  color             String    @default("yellow")
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@index([userId])
+  @@index([bookmarkId])
+}
+
+// API Keys for Automation
+model ApiKey {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  key               String    @unique
+  name              String
+  permissions       String[]  // ["read", "write", "delete"]
+  
+  lastUsedAt        DateTime?
+  createdAt         DateTime  @default(now())
+  revokedAt         DateTime?
+  
+  @@index([userId])
+  @@index([key])
+}
+
+// Enums
+enum SubscriptionTier {
+  FREE
+  PRO
+  TEAM
+  ENTERPRISE
+}
