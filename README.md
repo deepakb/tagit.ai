@@ -8,7 +8,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38bdf8)](https://tailwindcss.com/)
 [![Prisma](https://img.shields.io/badge/Prisma-ORM-2d3748)](https://www.prisma.io/)
 
-TagIt.ai is a next-generation bookmark manager that leverages the power of Google's Gemini AI to automatically organize, summarize, and tag your saved content. Stop drowning in tabs and unorganized links—let AI do the heavy lifting.
+TagIt.ai is a next-generation bookmark manager that leverages the power of Google's Gemini AI to automatically organize, summarize, and tag your saved content. **Experience a "production Grade" aesthetic with a premium Slate design system, distraction-free reading, and enterprise-grade architecture.** Stop drowning in tabs—let AI do the heavy lifting.
 
 ## 🚀 Features
 
@@ -31,6 +31,9 @@ TagIt.ai is a next-generation bookmark manager that leverages the power of Googl
 
 ### 🎨 Modern UI/UX
 - **Beautiful Interface**: Built with Shadcn UI and Tailwind CSS for a premium, accessible, and responsive feel.
+- **Premium Design System**: Meticulously crafted with a Slate color palette (`#020617`), clean borders, and glassmorphism effects.
+- **AI-Enhanced Reader**: Distraction-free reading view with AI-generated summaries and key takeaways side-by-side.
+- **Smart Profile**: Integrated profile management with seamless theme switching and access control.
 - **Dark Mode**: Fully supported system-aware dark mode for comfortable reading at night.
 - **Responsive Design**: Optimized experience across desktop, tablet, and mobile devices.
 
@@ -44,6 +47,8 @@ TagIt.ai is a next-generation bookmark manager that leverages the power of Googl
 - **Authentication**: [NextAuth.js v5](https://authjs.dev/)
 - **AI Engine**: [Google Gemini](https://deepmind.google/technologies/gemini/) (via Vercel AI SDK)
 - **Vector Search**: Google Text Embeddings
+- **Animation**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
 ## 🏁 Getting Started
 
