@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { Logo } from '@/components/logo';
+import { ProfileDropdown } from '@/components/profile-dropdown';
 import {
   ArrowRight, Check, Star, Zap, Search, Brain,
   Smartphone, Menu, X, Command, Sparkles, Youtube, Github, Twitter,
-  Code2, BarChart3
+  Code2, BarChart3, Sun, Moon
 } from 'lucide-react';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
@@ -15,6 +16,7 @@ export const LandingPage = () => {
   const [scrolled, setScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Mock login state
 
   useEffect(() => {
     setMounted(true);
@@ -57,15 +59,21 @@ export const LandingPage = () => {
             </div>
 
             <div className="hidden md:flex items-center gap-4">
-              <button onClick={toggleTheme} className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/5 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
-                {theme === 'dark' ? <Star className="w-5 h-5 fill-current" /> : <Star className="w-5 h-5" />}
-              </button>
-              <Link href="/auth/login" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2">
-                Sign In
-              </Link>
-              <Link href="/auth/signup" className="text-sm font-semibold bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 px-5 py-2.5 rounded-full transition-all hover:scale-105 active:scale-95">
-                Get Started
-              </Link>
+              {isLoggedIn ? (
+                <ProfileDropdown />
+              ) : (
+                <>
+                  <button onClick={toggleTheme} className="p-2.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/5 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors">
+                    {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                  </button>
+                  <Link href="/auth/login" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2">
+                    Sign In
+                  </Link>
+                  <Link href="/auth/signup" className="text-sm font-semibold bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 px-5 py-2.5 rounded-full transition-all hover:scale-105 active:scale-95">
+                    Get Started
+                  </Link>
+                </>
+              )}
             </div>
 
             <div className="md:hidden flex items-center gap-4">
@@ -201,7 +209,13 @@ export const LandingPage = () => {
 
                       {/* Card 2: YouTube Video */}
                       <div className="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
-                        <div className="h-32 bg-gray-800 relative">
+                        <div className="h-32 relative overflow-hidden">
+                          <img
+                            src="https://picsum.photos/seed/nextjs/400/200"
+                            alt="Next.js 15"
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
                           <div className="absolute inset-0 flex items-center justify-center">
                             <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                               <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-white border-b-[6px] border-b-transparent ml-1"></div>

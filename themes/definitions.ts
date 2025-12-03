@@ -1,0 +1,51 @@
+import { tokens } from "./tokens"
+
+export const themes = {
+    light: {
+        background: tokens.base.white,
+        foreground: tokens.base.black,
+        card: tokens.base.white,
+        "card-foreground": tokens.base.black,
+        popover: tokens.base.white,
+        "popover-foreground": tokens.base.black,
+        primary: tokens.base.black,
+        "primary-foreground": tokens.base.white,
+        secondary: tokens.base.gray[50],
+        "secondary-foreground": tokens.base.black,
+        muted: tokens.base.gray[50],
+        "muted-foreground": tokens.base.gray[500],
+        accent: tokens.base.gray[50],
+        "accent-foreground": tokens.base.black,
+        destructive: tokens.base.red[500],
+        "destructive-foreground": tokens.base.white,
+        border: tokens.base.gray[100],
+        input: tokens.base.gray[100],
+        ring: tokens.base.black,
+        radius: "0.5rem",
+    },
+    dark: {
+        background: tokens.base.black,
+        foreground: tokens.base.white,
+        card: tokens.base.gray[900],
+        "card-foreground": tokens.base.white,
+        popover: tokens.base.gray[900],
+        "popover-foreground": tokens.base.white,
+        primary: tokens.base.white,
+        "primary-foreground": tokens.base.black,
+        secondary: tokens.base.gray[800],
+        "secondary-foreground": tokens.base.white,
+        muted: tokens.base.gray[800],
+        "muted-foreground": tokens.base.gray[400],
+        accent: tokens.base.gray[800],
+        "accent-foreground": tokens.base.white,
+        destructive: tokens.base.red[600],
+        "destructive-foreground": tokens.base.white,
+        border: tokens.base.gray[700],
+        input: tokens.base.gray[700],
+        ring: tokens.base.white,
+        radius: "0.5rem",
+    },
+} as const
+
+export type Theme = keyof typeof themes
+export type ThemeVariables = keyof typeof themes.light

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Logo } from "@/components/logo"
 import { Home, Tag, Star, Archive, Settings, LogOut, Plus, Folder } from "lucide-react"
+import { AddCollectionModal } from "@/components/add-collection-modal"
 
 export function Sidebar() {
     const pathname = usePathname()
@@ -22,8 +23,8 @@ export function Sidebar() {
                     <Link
                         href="/dashboard"
                         className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${isActive('/dashboard')
-                                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'
+                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'
                             }`}
                     >
                         <Home className="h-4 w-4" />
@@ -32,8 +33,8 @@ export function Sidebar() {
                     <Link
                         href="/bookmarks"
                         className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${isActive('/bookmarks')
-                                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'
+                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'
                             }`}
                     >
                         <Tag className="h-4 w-4" />
@@ -42,8 +43,8 @@ export function Sidebar() {
                     <Link
                         href="/favorites"
                         className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${isActive('/favorites')
-                                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'
+                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'
                             }`}
                     >
                         <Star className="h-4 w-4" />
@@ -52,8 +53,8 @@ export function Sidebar() {
                     <Link
                         href="/archive"
                         className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${isActive('/archive')
-                                ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
-                                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'
+                            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200'
                             }`}
                     >
                         <Archive className="h-4 w-4" />
@@ -65,9 +66,7 @@ export function Sidebar() {
                 <div>
                     <div className="flex items-center justify-between px-2 mb-2">
                         <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Collections</h3>
-                        <button className="text-gray-400 hover:text-blue-500 transition-colors">
-                            <Plus className="w-3 h-3" />
-                        </button>
+                        <AddCollectionModal />
                     </div>
                     <nav className="space-y-1">
                         {['Frontend', 'AI Research', 'Design System', 'Startups'].map((collection, i) => (
